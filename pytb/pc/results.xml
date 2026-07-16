@@ -1,0 +1,7 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1781078051" />
+    <testcase name="test_reset" classname="pc_tb" file="/home/ragur/riscv_files/pytb/pc_tb.py" lineno="5" time="0.0015459060668945312" sim_time_ns="11.0" ratio_time="7115.568167797655" />
+    <testcase name="test_increment" classname="pc_tb" file="/home/ragur/riscv_files/pytb/pc_tb.py" lineno="17" time="0.0007877349853515625" sim_time_ns="71.0" ratio_time="90131.83535108958" />
+  </testsuite>
+</testsuites>

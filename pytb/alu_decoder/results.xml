@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1781852053" />
+    <testcase name="test_run" classname="alu_decoder_tb" file="/home/ragur/riscv_files/pytb/alu_decoder/alu_decoder_tb.py" lineno="5" time="0.0014433860778808594" sim_time_ns="45.0" ratio_time="31176.68979187314" />
+  </testsuite>
+</testsuites>

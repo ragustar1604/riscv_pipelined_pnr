@@ -1,0 +1,29 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sun Jun 28 15:04:34 2026
+[*]
+[dumpfile] "/home/ragur/riscv_files/pytb/top_wrapper/sim_build/top_wrapper.fst"
+[dumpfile_mtime] "Sun Jun 28 14:58:19 2026"
+[dumpfile_size] 2359
+[savefile] "/home/ragur/riscv_files/pytb/top_wrapper/sim_build/wave_config.gtkw"
+[timestart] 0
+[size] 1920 985
+[pos] -27 -24
+*-14.100000 26250 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top_wrapper.
+[sst_width] 297
+[signals_width] 198
+[sst_expanded] 1
+[sst_vpaned_height] 291
+@28
+top_wrapper.clk
+top_wrapper.reset
+top_wrapper.dut.Pc_src
+@22
+top_wrapper.dut.Pc[31:0]
+top_wrapper.dutt.instruction_out[31:0]
+top_wrapper.dutttt.rd1[31:0]
+@23
+top_wrapper.dutttt.rd2[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

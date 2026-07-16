@@ -1,0 +1,81 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Fri Jul  3 07:47:11 2026
+[*]
+[dumpfile] "/home/ragur/riscv_files/pytb/top_wrapper/sim_build/top_wrapper.fst"
+[dumpfile_mtime] "Fri Jul  3 07:36:33 2026"
+[dumpfile_size] 2274
+[savefile] "/home/ragur/riscv_files/pytb/top_wrapper/wave_config_final.gtkw"
+[timestart] 0
+[size] 1920 985
+[pos] -1 -1
+*-13.800000 30000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top_wrapper.
+[sst_width] 297
+[signals_width] 371
+[sst_expanded] 1
+[sst_vpaned_height] 291
+@28
+top_wrapper.clk
+top_wrapper.reset
+@200
+-PC related
+@421
+top_wrapper.dut.Pc[31:0]
+@28
+top_wrapper.dut.Pc_src
+@22
+top_wrapper.Pc_target[31:0]
+@420
+top_wrapper.Next_Pc[31:0]
+@200
+-instruction mem
+@22
+top_wrapper.dutt.instruction_out[31:0]
+top_wrapper.dutt.address_in_pc[31:0]
+@200
+-data mem
+@22
+top_wrapper.data_dut.read_data[31:0]
+top_wrapper.data_dut.write_data[31:0]
+@28
+top_wrapper.data_dut.write_enable
+@22
+top_wrapper.data_dut.address[31:0]
+@200
+-sign extender
+@28
+top_wrapper.duttt.imm_cntrl[1:0]
+@22
+top_wrapper.duttt.extended_data[31:0]
+top_wrapper.duttt.immediate_data[24:0]
+@200
+-register file 
+@22
+top_wrapper.dutttt.read_reg1_address[4:0]
+top_wrapper.dutttt.read_reg2_address[4:0]
+top_wrapper.dutttt.rd1[31:0]
+top_wrapper.dutttt.rd2[31:0]
+top_wrapper.dutttt.write_address[4:0]
+top_wrapper.dutttt.wd[31:0]
+@28
+top_wrapper.dutttt.write_data_enable
+@200
+-alu
+@22
+top_wrapper.ins.Data_1[31:0]
+top_wrapper.ins.Data_2[31:0]
+top_wrapper.ins.alu_result[31:0]
+@28
+top_wrapper.ins.control_info[2:0]
+top_wrapper.ins.zero_value_flag
+@200
+-alu_branch
+@420
+top_wrapper.dutttrt.Pc_target[31:0]
+top_wrapper.dutttrt.Imm_data[31:0]
+top_wrapper.dutttrt.Next_Pc[31:0]
+@28
+top_wrapper.dut.Pc_src
+[pattern_trace] 1
+[pattern_trace] 0

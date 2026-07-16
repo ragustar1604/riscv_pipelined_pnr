@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1781853569" />
+    <testcase name="test_reset" classname="control_wrapper_tb" file="/home/ragur/riscv_files/pytb/control_wrapper/control_wrapper_tb.py" lineno="5" time="0.00136566162109375" sim_time_ns="100.0" ratio_time="73224.58100558659" />
+  </testsuite>
+</testsuites>
