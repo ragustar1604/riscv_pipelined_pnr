@@ -1,0 +1,158 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Jul 18 06:22:41 2026
+[*]
+[dumpfile] "/home/ragur/riscv_pipelined/pytb/top_wrapper/sim_build/top_wrapper.fst"
+[dumpfile_mtime] "Fri Jul 17 06:45:03 2026"
+[dumpfile_size] 3672
+[savefile] "/home/ragur/riscv_pipelined/pytb/top_wrapper/wave_config_pipeline_hazard_v2.gtkw"
+[timestart] 0
+[size] 1920 985
+[pos] -27 -24
+*-14.400001 5000 5000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top_wrapper.
+[sst_width] 297
+[signals_width] 371
+[sst_expanded] 1
+[sst_vpaned_height] 291
+@28
+top_wrapper.clk
+top_wrapper.reset
+@200
+-PC related
+@28
+top_wrapper.dut.Pc_src
+@22
+top_wrapper.Pc_target[31:0]
+@420
+top_wrapper.Next_Pc[31:0]
+@22
+top_wrapper.Pc[31:0]
+top_wrapper.address_in_pc[31:0]
+@200
+-instruction mem
+@22
+top_wrapper.dutt.instruction_out[31:0]
+@200
+-data mem
+@22
+top_wrapper.data_dut.read_data[31:0]
+top_wrapper.data_dut.write_data[31:0]
+@28
+top_wrapper.data_dut.write_enable
+@22
+top_wrapper.data_dut.address[31:0]
+@200
+-sign extender
+@28
+top_wrapper.duttt.imm_cntrl[1:0]
+@22
+top_wrapper.duttt.extended_data[31:0]
+top_wrapper.duttt.immediate_data[24:0]
+@200
+-register file 
+@24
+top_wrapper.dutttt.read_reg1_address[4:0]
+@22
+top_wrapper.dutttt.read_reg2_address[4:0]
+top_wrapper.dutttt.rd1[31:0]
+top_wrapper.dutttt.rd2[31:0]
+top_wrapper.dutttt.write_address[4:0]
+top_wrapper.dutttt.wd[31:0]
+@28
+top_wrapper.dutttt.write_data_enable
+@200
+-alu
+@22
+top_wrapper.ins.Data_1[31:0]
+top_wrapper.ins.Data_2[31:0]
+top_wrapper.ins.alu_result[31:0]
+@28
+top_wrapper.ins.control_info[2:0]
+top_wrapper.ins.zero_value_flag
+@200
+-alu_branch
+@420
+top_wrapper.dutttrt.Pc_target[31:0]
+top_wrapper.dutttrt.Next_Pc[31:0]
+@28
+top_wrapper.dut.Pc_src
+@200
+-
+@28
+top_wrapper.clk
+top_wrapper.reset
+@200
+-stage 1
+-decodestage
+@22
+top_wrapper.instruction_out[31:0]
+top_wrapper.instruction_out_reg[31:0]
+@200
+-stage 2
+-execute state
+@22
+top_wrapper.extended_data_reg[31:0]
+top_wrapper.rd1_reg[31:0]
+top_wrapper.rd2_reg[31:0]
+@28
+top_wrapper.ALUSrc_e
+top_wrapper.alu_control_e[2:0]
+@22
+top_wrapper.Data_1[31:0]
+@420
+top_wrapper.Data_2[31:0]
+@22
+top_wrapper.alu_result[31:0]
+@200
+-stage3
+-memory 
+@22
+top_wrapper.alu_result_reg_1[31:0]
+top_wrapper.write_data_reg[31:0]
+top_wrapper.address[31:0]
+top_wrapper.read_data[31:0]
+@200
+-stage 4
+@201
+-memroy
+@22
+top_wrapper.read_data_reg[31:0]
+@28
+top_wrapper.Result_src_w
+@22
+top_wrapper.wd[31:0]
+@200
+-hazard unit
+@28
+[color] 1
+top_wrapper.dexter.FlushD
+[color] 1
+top_wrapper.dexter.FlushE
+[color] 1
+top_wrapper.dexter.ForwardAE[1:0]
+[color] 1
+top_wrapper.dexter.ForwardBE[1:0]
+[color] 1
+top_wrapper.dexter.StallD
+[color] 1
+top_wrapper.dexter.StallF
+[color] 1
+top_wrapper.dexter.lwStall
+top_wrapper.dexter.Pc_src_E
+[color] 3
+top_wrapper.dexter.RegWrite_status_from_mem
+[color] 3
+top_wrapper.dexter.RegWrite_status_from_wb
+[color] 3
+top_wrapper.dexter.Result_src_from_exe
+@22
+top_wrapper.dexter.Rs1D[4:0]
+top_wrapper.dexter.Rs1E[4:0]
+top_wrapper.dexter.Rs2E[4:0]
+top_wrapper.dexter.Rs2D[4:0]
+top_wrapper.dexter.write_address_exe[4:0]
+top_wrapper.dexter.write_address_mem[4:0]
+top_wrapper.dexter.write_address_write[4:0]
+[pattern_trace] 1
+[pattern_trace] 0

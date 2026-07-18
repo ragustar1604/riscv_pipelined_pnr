@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Fri Jul  3 07:47:11 2026
+[*] Tue Jul 14 06:30:31 2026
 [*]
-[dumpfile] "/home/ragur/riscv_files/pytb/top_wrapper/sim_build/top_wrapper.fst"
-[dumpfile_mtime] "Fri Jul  3 07:36:33 2026"
-[dumpfile_size] 2274
-[savefile] "/home/ragur/riscv_files/pytb/top_wrapper/wave_config_final.gtkw"
+[dumpfile] "/home/ragur/riscv_wo_hazard/riscv_pipelined/pytb/top_wrapper/sim_build/top_wrapper.fst"
+[dumpfile_mtime] "Tue Jul 14 06:08:16 2026"
+[dumpfile_size] 2956
+[savefile] "/home/ragur/riscv_wo_hazard/riscv_pipelined/pytb/top_wrapper/wave_config_final.gtkw"
 [timestart] 0
 [size] 1920 985
 [pos] -1 -1
-*-13.800000 30000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-13.800000 5770 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top_wrapper.
 [sst_width] 297
 [signals_width] 371
@@ -20,19 +20,20 @@ top_wrapper.clk
 top_wrapper.reset
 @200
 -PC related
-@421
-top_wrapper.dut.Pc[31:0]
 @28
 top_wrapper.dut.Pc_src
 @22
 top_wrapper.Pc_target[31:0]
 @420
 top_wrapper.Next_Pc[31:0]
+@22
+top_wrapper.Pc[31:0]
+@23
+top_wrapper.address_in_pc[31:0]
 @200
 -instruction mem
 @22
 top_wrapper.dutt.instruction_out[31:0]
-top_wrapper.dutt.address_in_pc[31:0]
 @200
 -data mem
 @22
@@ -73,9 +74,15 @@ top_wrapper.ins.zero_value_flag
 -alu_branch
 @420
 top_wrapper.dutttrt.Pc_target[31:0]
-top_wrapper.dutttrt.Imm_data[31:0]
 top_wrapper.dutttrt.Next_Pc[31:0]
 @28
 top_wrapper.dut.Pc_src
+@200
+-stage 1
+@22
+top_wrapper.instruction_out_reg[31:0]
+@28
+top_wrapper.current_pc_fetch_stage
+top_wrapper.current_pc_decode_stage
 [pattern_trace] 1
 [pattern_trace] 0

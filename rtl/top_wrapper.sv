@@ -358,7 +358,7 @@ logic Pc_src_E;
 assign write_address_exe=write_address_e;
 assign Result_src_from_exe=Result_src_e;
 assign Rs1D=read_address_1_D;
-assign Rs2D=read_address_1_D;
+assign Rs2D=read_address_2_D;
 assign Pc_src_E=Pc_src;
 ///HAZARD UNIT 
 

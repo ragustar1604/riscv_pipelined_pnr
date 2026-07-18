@@ -60,5 +60,42 @@ async def test_reset(dut):
     await RisingEdge(dut.clk)
     await Timer(4, unit="ns")
 
+    await RisingEdge(dut.clk)
+    await Timer(4, unit="ns")
+
+    await RisingEdge(dut.clk)
+    await Timer(4, unit="ns")
+
+
+    await RisingEdge(dut.clk)
+    await Timer(4, unit="ns")
+
+
+    await RisingEdge(dut.clk)
+    await Timer(4, unit="ns")
+
+
+    await RisingEdge(dut.clk)
+    await Timer(4, unit="ns")
+
+
+    await RisingEdge(dut.clk)
+    await Timer(4, unit="ns")
+
+
+    await RisingEdge(dut.clk)
+    await Timer(4, unit="ns")
+
+
+    await RisingEdge(dut.clk)
+    await Timer(4, unit="ns")
+
+    await RisingEdge(dut.clk)
+    await Timer(4, unit="ns")
+
+
+    await RisingEdge(dut.clk)
+    await Timer(4, unit="ns")
+
  
    
