@@ -6,3 +6,19 @@ Address  Instruction           Type  Hex Code   Dependency / Forwarding Test Cas
 0x100C   and x7, x4, x8         R    008273B3   EX-to-EX Forwarding: Needs x4 from 'or' (1 cycle apart)
 0x1010   add x4, x7, x4         R    00438233   Double Hazard: EX-to-EX for x7 (from 'and') AND MEM-to-EX for x4 (from 'or')
 0x1014   beq x4, x4, L7         B    FE420AE3   Branch Hazard: Checks if forwarding works into the branch comparator (Targets 0x1000)
+
+//branch instrcution testing 
+Address  Instruction       Type  Hex Code   Dependency / Forwarding Test Case
+----------------------------------------------------------------------------------------
+0x1000   add x7, x5, x6     R    006283B3   Base arithmetic execution (Generates x7)
+0x1004   beq x7, x7, L5     B    00738663   Branch Hazard: Jumps forward 3 instructions (+12 bytes) to the 5th slot
+0x1008   sw  x5, 0(x9)      S    0054A023   Placeholder: Skipped if branch is taken
+0x100C   sub x8, x5, x6     R    40628433   ALU Placeholder: Skipped if branch is taken
+0x1010   and x7, x7, x8     R    0083F3B3   Target Instruction: Executes immediately if branch is taken
+
+
+006283B3
+00738663
+0054A023
+40628433
+0083F3B3

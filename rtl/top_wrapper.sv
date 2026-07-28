@@ -7,7 +7,13 @@ parameter total_num_reg=32,
 parameter reg_add_size=5,
 parameter DEPTH =1024)(
     input clk,
-    input reset
+    input reset,
+    // Probed outputs to stop Yosys from purging your logic:
+    output logic [DATA_WIDTH-1:0] probe_pc,         // From Fetch stage: tracks execution flow
+    output logic [DATA_WIDTH-1:0] probe_alu_out,    // From Execute stage: tracks calculations
+    output logic [DATA_WIDTH-1:0] probe_wb_data,    // From Writeback stage: tracks register updates
+    output logic        probe_reg_write   // From Control path: tracks state changes
+    
 );
 
 //Fetch stage variables 
@@ -362,15 +368,10 @@ assign Rs2D=read_address_2_D;
 assign Pc_src_E=Pc_src;
 ///HAZARD UNIT 
 
-// TEMPORARY DEBUGGING BLOCK - Remove after finding the loop
-initial begin
-    #1; 
-end
-
-always @(*) begin
-    $display("[TIME 0 LOOP DETECTED] PC: %h | Next_PC: %h | PC_Src: %b | Instruction: %h", 
-             Pc, Next_Pc, Pc_src, instruction_out_reg);
-end
+assign probe_pc=address_in_pc;
+assign probe_alu_out=alu_result;
+assign probe_wb_data=write_data;
+assign probe_reg_write=Reg_write;
 
 endmodule
 

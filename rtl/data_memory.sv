@@ -1,5 +1,5 @@
 module data_memory#(parameter DATA_WIDTH =32,
-parameter DEPTH =1024)
+parameter DEPTH =2)
 (
 input clk,
 input reset,
