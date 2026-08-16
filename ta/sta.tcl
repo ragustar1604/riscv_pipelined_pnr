@@ -40,6 +40,10 @@ puts "Total gate instances linked: [llength [get_cells *]]"
 # =================== TIMING REPORT ===================
 
 puts "\n>>> CRITICAL PATH TIMING REPORT <<<"
-report_checks -path_delay max -format full
+# report_checks -path_delay max -format full
+# =================== TIMING DIAGNOSTICS ===================
+puts "\n>>> WRITING TIMING REPORT TO FILE <<<"
 
+# This line handles both displaying and saving the report
+tee -file timing_report.rpt { report_checks -path_delay max -format full }
 exit

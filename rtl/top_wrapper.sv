@@ -368,10 +368,26 @@ assign Rs2D=read_address_2_D;
 assign Pc_src_E=Pc_src;
 ///HAZARD UNIT 
 
-assign probe_pc=address_in_pc;
-assign probe_alu_out=alu_result;
-assign probe_wb_data=write_data;
-assign probe_reg_write=Reg_write;
+
+//dummy outputs
+always_ff@(posedge(clk))
+begin
+    if(!reset)
+    begin
+        probe_pc<=0;
+        probe_alu_out<=0;
+        probe_wb_data<=0;
+        probe_reg_write<=0;
+    end
+    else
+    begin
+        probe_pc<=address_in_pc;
+        probe_alu_out<=alu_result;
+        probe_wb_data<=write_data;
+        probe_reg_write<=Reg_write;
+    end
+end
+
 
 endmodule
 
