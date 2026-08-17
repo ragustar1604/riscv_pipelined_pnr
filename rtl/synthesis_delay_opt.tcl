@@ -38,4 +38,4 @@ flatten
 # 5. Purge dead design cells 
 clean -purge
 tee -o synthesis_report_delay_opt.txt stat -liberty /home/ragur/sky130/sky130_fd_sc_hd__tt_025C_1v80.lib
-write_verilog synth_netlist.v
+write_verilog synth_netlist_delay_opt.v

@@ -1,8 +1,8 @@
 # Synthesis and Timing Results
 
-This document summarizes the synthesis exploration and Static Timing Analysis (STA) for the 32I 5 Stage pipelined RISC V processor core, targeted to the SkyWater 130nm (sky130_fd_sc_hd) standard cell library.
+This document summarizes the synthesis exploration and Static Timing Analysis (STA) for the RV32I 5-stage pipelined RISC-V processor core, targeted to the SkyWater 130nm (sky130_fd_sc_hd) standard cell library.
 
-Two synthesis strategies were compared: an Area Optimized Netlist (ripple carry ALU architecture) and a Delay Optimized Netlist (parallel lookahead tree architecture).
+Two synthesis strategies were compared: an Area-Optimized Netlist (ripple-carry ALU architecture) and a Delay-Optimized Netlist (restructured, non-ripple ALU architecture).
 
 ## Reproduction Steps
 
@@ -13,16 +13,16 @@ Synthesis scripts live in the `rtl/` directory.
 ```bash
 cd rtl
 
-# Delay Optimized Synthesis (maximizes operating frequency)
+# Delay-Optimized Synthesis (maximizes operating frequency)
 yosys -c 1-synthesis.tcl
 
-# Area Optimized Synthesis (minimizes silicon footprint)
+# Area-Optimized Synthesis (minimizes silicon footprint)
 yosys -c 2-synthesis_area_opt.tcl
 ```
 
-`1-synthesis.tcl` runs  delay targeted mapping (abc -D, tree balancing, logic restructuring) and produces a higher cell count.
+`1-synthesis.tcl` runs delay-targeted mapping (`abc -D`, tree balancing, logic restructuring) and produces a higher cell count.
 
-`2-synthesis_area_opt.tcl` runs area driven standard cell mapping and produces the minimal gate count and cell area.
+`2-synthesis_area_opt.tcl` runs area-driven standard cell mapping and produces the minimal gate count and cell area.
 
 ### Static Timing Analysis (OpenROAD / OpenSTA)
 
@@ -33,45 +33,47 @@ cd ../ta
 /home/ragur/OpenROAD/build/bin/openroad -exit sta.tcl
 ```
 
+Worst slack was confirmed directly via:
+
+```tcl
+report_worst_slack -max
+```
+
 ## Comparative Benchmark Results
 
 Target clock period: 10.00 ns (100.0 MHz) | Technology: Sky130 HD
 
-| Metric | Area Optimized Baseline | Delay Optimized Netlist | Delta / Tradeoff Impact |
+| Metric | Area-Optimized Baseline | Delay-Optimized Netlist | Delta / Tradeoff Impact |
 |---|---|---|---|
 | Total Standard Cells | 5,344 | 8,064 | +2,720 cells (+50.9%) |
-| Flip Flops (Sequential Elements) | 1,511 (455 dfxtp_1 + 1,056 edfxtp_1) | 1,511 (455 dfxtp_1 + 1,056 edfxtp_1) | 0 (identical architectural state) |
-| Combinational Logic Cells | 3,833 | 6,553 | +2,720 gates (+70.9%) |
-| Total Standard Cell Area | 65,517.84 um^2 | 71,080.67 um^2 | +5,562.83 um^2 (+8.5%) |
-| Sequential Area | 40,819.15 um^2 (62.3%) | 40,819.15 um^2 (57.4%) | 0.00 um^2 (identical) |
-| Combinational Area | 24,698.69 um^2 | 30,261.52 um^2 | +5,562.83 um^2 (+22.5%) |
-| ALU Carry Architecture | 28 x maj3_1 (ripple carry) | 0 x maj3_1 (parallel tree) | serial ripple vs parallel lookahead |
-| Reg to Reg Arrival Time | 9.58 ns | 8.47 ns | 1.11 ns faster |
-| Reg to Reg Slack (@ 100 MHz) | +0.05 ns (50 ps) | +1.12 ns (1,120 ps) | +1.07 ns timing margin |
-| Max Operating Frequency (Fmax) | 100.50 MHz | 112.61 MHz | +12.11 MHz headroom |
+| Total Standard Cell Area | 65,517.84 µm² | 71,080.67 µm² | +5,562.83 µm² (+8.5%) |
+| Sequential Area | 40,819.15 µm² (62.3%) | 40,819.15 µm² (57.4%) | 0.00 µm² (identical) |
+| Combinational Area | 24,698.69 µm² | 30,261.52 µm² | +5,562.83 µm² (+22.5%) |
+| ALU Carry Cells (`maj3_1`) | 28 total, 12 chained serially in the critical path | 0 | ripple chain eliminated from critical path |
+| Worst-Case Arrival Time | 9.58 ns | (see worst slack below) | not directly comparable |
+| Worst Setup Slack | +0.05 ns (verified via traced critical path) | +1.29 ns (verified via `report_worst_slack -max`) | +1.24 ns timing margin |
+| Max Operating Frequency (Fmax) | ~100.0 MHz | ~114.8 MHz | +14.8 MHz headroom |
 
 ## Engineering and Architectural Discussion
 
-### Critical Path Selection: Reg to Reg vs probe_alu_out
+### Critical Path Selection: Reg-to-Reg vs `probe_alu_out`
 
-The output port `probe_alu_out` is an artificial top level probe pin, added so Yosys does not eliminate the execution pipeline logic as dead code during synthesis.
+The output port `probe_alu_out` is an artificial top-level probe pin, added so Yosys does not eliminate execution-pipeline logic as dead code during synthesis. Its associated timing path (path group `clk_v`) includes a virtual board-delay constraint and does not reflect real internal core timing. It was excluded from analysis for this reason.
 
-The output path group (`clk_v`) includes a virtual board delay constraint (negative 2.00 ns) and does not reflect real internal core timing.
+The register-to-register path (path group `clk`) is the ground-truth metric that determines the operational clock limit of the processor core. All slack and frequency figures above are drawn from this path group only, cross-checked against `report_worst_slack -max` output for the same run.
 
-The register to register path (path group `clk`) is the sole ground truth metric that determines the operational clock limit of the processor core.
+### Carry Chain Topology: Verified Observations
 
-### Carry Chain Topology: maj3_1 vs Parallel Prefix Trees
+**Area-optimized run:** The 32-bit ALU addition maps to 28 `sky130_fd_sc_hd__maj3_1` majority cells. Tracing the actual worst-case timing path shows 12 of these `maj3_1` cells chained back-to-back, each contributing serially to arrival time, consistent with a ripple-carry dependency structure. This path closes at 9.58 ns arrival with only +0.05 ns of setup slack.
 
-**Area Strategy (O(N) serial ripple):** Maps the 32 bit ALU addition directly to 28 cascaded `sky130_fd_sc_hd__maj3_1` majority standard cells. This minimizes silicon area, but the serial carry cascade takes about 6.0 ns of propagation time, pushing arrival time to 9.58 ns and leaves only a  narrow setup slack of only +0.05 ns.
-
-**Delay Strategy (O(log N) tree restructuring):** ABC unrolls the carry recurrence relations into logarithmic carry lookahead structures built from fast primitive NAND, NOR, and AOI gates. This eliminates all `maj3_1` cells entirely and accelerates the critical path by 1.11 ns.
+**Delay-optimized run:** Under the same RTL with a tightened delay target (`abc -D`), the resulting critical path contains zero `maj3_1` cells and achieves +1.29 ns setup slack, a meaningfully more parallel structure than the baseline. The specific replacement topology was not independently traced, so this document describes it as "restructured, non-ripple" rather than asserting a named adder architecture such as carry-lookahead.
 
 ### Physical Implementation (PnR) Feasibility
 
-**Area Netlist Risk:** A pre layout setup slack of +0.05 ns (50 ps) leaves essentially zero margin for physical design. Wire RC parasitics, clock skew, and crosstalk introduced during floorplanning and routing will very likely cause setup timing violations at 100 MHz.
+**Area Netlist Risk:** A pre-layout setup slack of +0.05 ns (50 ps) leaves essentially zero margin for physical design. Wire RC parasitics, clock skew, and crosstalk introduced during floorplanning and routing would very likely cause setup timing violations at 100 MHz.
 
-**Delay Netlist Viability:** The +1.12 ns positive slack gives OpenROAD enough budget to absorb post CTS clock skew and detailed routing parasitics, which is why this netlist was selected for physical place and route.
+**Delay Netlist Viability:** The +1.29 ns positive slack gives OpenROAD meaningfully more budget to absorb post-CTS clock skew and detailed routing parasitics, which is the basis for carrying this netlist forward into physical implementation.
 
 ## Summary
 
-The area optimized netlist is smaller and lower power, but its timing margin is too thin to survive real placement and routing. The delay optimized netlist costs about 8.5% more silicon area, but its parallel lookahead carry structure buys back over a nanosecond of slack, which is the difference between a design that closes timing on silicon and one that does not. For this reason, the delay optimized netlist was carried forward into physical implementation.
+The area-optimized netlist is smaller and lower-power, but its timing margin (+0.05 ns) is too thin to reliably survive real placement and routing. The delay-optimized netlist costs about 8.5% more silicon area and 50.9% more standard cells, but eliminates the serial `maj3_1` ripple-carry chain from the critical path and recovers +1.24 ns of setup slack, reaching ~114.8 MHz. For this reason, the delay-optimized netlist is the stronger candidate for physical implementation, though the specific replacement carry architecture has not been structurally confirmed beyond "non-ripple, more parallel."

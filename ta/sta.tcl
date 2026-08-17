@@ -8,7 +8,7 @@ read_lef /home/ragur/OpenROAD/test/sky130hd/sky130_fd_sc_hd.lef
 read_liberty /home/ragur/sky130/sky130_fd_sc_hd__tt_025C_1v80.lib
 
 # 4. Ingest your gate-level netlist (With the 54,900 live cells!)
-read_verilog ../rtl/synth_netlist.v
+read_verilog ../rtl/synth_netlist_area_opt.v
 
 # 5. Build and link the complete database
 link_design top_wrapper
@@ -43,7 +43,12 @@ puts "\n>>> CRITICAL PATH TIMING REPORT <<<"
 # report_checks -path_delay max -format full
 # =================== TIMING DIAGNOSTICS ===================
 puts "\n>>> WRITING TIMING REPORT TO FILE <<<"
+tee -file worst_slack.rpt {report_worst_slack -max}
 
 # This line handles both displaying and saving the report
 tee -file timing_report.rpt { report_checks -path_delay max -format full }
+
+tee -file timing_report_top10.rpt {
+    report_checks -path_delay max -endpoint_count 10 -group_count 10 -format full
+}
 exit

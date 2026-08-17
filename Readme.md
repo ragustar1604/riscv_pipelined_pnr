@@ -1,6 +1,6 @@
 # RV32I 5-Stage Pipelined Processor
 
-A 5 stage pipelined RISCV RV32I processor was built from the single cycle implementation,using SystemVerilog. The design features a dedicated Hazard Unit managing all classes of pipeline hazards, verified using cocotb testbenches with targeted assembly programs, and synthesized to the SkyWater 130nm (sky130) process node using Yosys with static timing analysis performed using OpenSTA.
+A 5 stage pipelined RISCV RV32I processor was built from the single cycle implementation, using SystemVerilog. The design features a dedicated Hazard Unit managing all classes of pipeline hazards, verified using cocotb testbenches with targeted assembly programs, and synthesized to the SkyWater 130nm (sky130) process node using Yosys with static timing analysis performed using OpenSTA.
 
 ---
 
@@ -17,7 +17,7 @@ A 5 stage pipelined RISCV RV32I processor was built from the single cycle implem
 
 ## Pipeline Architecture
 
-The processor implements a  5-stage pipeline:
+The processor implements a 5-stage pipeline:
 
 ```
 Fetch → Decode → Execute → Memory → Writeback
@@ -83,8 +83,8 @@ riscv_pipelined/
     ├── sta.tcl                                # OpenSTA run script
     ├── constraints.sdc                        # Timing constraints (10ns clock period)
     ├── timing_report.txt                      # Timing report (timing optimised netlist)
-    ├── timing_report_delay_opt.rpt            # Timing report (delay optimised netlist)
-    ├── timing_report_area_carry_adder.rpt     # Timing report (area optimised netlist)
+    ├── timing_report_delay_opt.rpt             # Timing report (delay optimised netlist)
+    ├── timing_report_area_carry_adder.rpt      # Timing report (area optimised netlist)
     ├── timing_report_v2.txt                   # Updated timing report
     ├── first_timing_report.txt                # Initial timing report
     └── report_comparev1vsv2.md                # Comparison between synthesis strategies
@@ -138,14 +138,25 @@ This program verifies that the two instructions after a taken branch are correct
 ---
 
 ## Synthesis Results
-**ALL the results are in the result directory**
-## Key Design Decisions
 
+Two synthesis strategies were compared on the same RTL: area optimized and delay optimized (`abc -D`). Full timing reports and netlists are in the `rtl/` and `ta/` directories.
+
+| Metric | Area Optimized | Delay Optimized |
+|---|---|---|
+| Standard cells | 5,344 | 8,064 |
+| Core area | 65,517.84 um^2 | 71,080.67 um^2 |
+| Worst setup slack | +0.05 ns | +1.29 ns |
+| Max frequency | ~100.0 MHz | ~114.8 MHz |
+| ALU critical path | 12 cascaded `maj3_1` cells (ripple carry) | 0 `maj3_1` cells (restructured, non-ripple) |
+
+The area optimized netlist has minimal margin for post layout timing closure. The delay optimized netlist trades roughly 8.5% more area for over a nanosecond of setup slack headroom and was carried forward for physical implementation. See `result/synthesis_and_timing_results.md` for the full comparison and discussion.
+
+## Key Design Decisions
 
 **Purely combinational Hazard Unit:** All hazard detection and forwarding control logic is combinational, implemented in 61 standard cells with zero flip flops. Forwarding select signals are stable before the clock edge, allowing the Execute stage muxes to settle correctly within the same cycle.
 
 **Branch resolution in Execute stage:** Branch outcome is determined in the Execute stage after ALU comparison, resulting in a 2-cycle branch penalty. Two instructions fetched after the branch are flushed on a taken branch.
 
-**Combinational data memory read:** Data memory uses `assign read_data = data_register[address]` for zero-latency reads, consistent with the single cycle proecessor  model.
+**Combinational data memory read:** Data memory uses `assign read_data = data_register[address]` for zero-latency reads, consistent with the single cycle proecessor model.
 
 **Active low synchronous reset:** All sequential elements use active low synchronous reset.
