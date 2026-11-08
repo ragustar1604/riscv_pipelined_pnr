@@ -8,11 +8,11 @@ parameter reg_add_size=5,
 parameter DEPTH =1024)(
     input clk,
     input reset,
-    // Probed outputs to stop Yosys from purging your logic:
-    output logic [DATA_WIDTH-1:0] probe_pc,         // From Fetch stage: tracks execution flow
-    output logic [DATA_WIDTH-1:0] probe_alu_out,    // From Execute stage: tracks calculations
-    output logic [DATA_WIDTH-1:0] probe_wb_data,    // From Writeback stage: tracks register updates
-    output logic        probe_reg_write   // From Control path: tracks state changes
+    // Probed outputs to stop Yosys from purging logic:
+    output logic [DATA_WIDTH-1:0] probe_pc,         // From Fetch stage
+    output logic [DATA_WIDTH-1:0] probe_alu_out,    // From Execute stage
+    output logic [DATA_WIDTH-1:0] probe_wb_data,    // From Writeback stage
+    output logic        probe_reg_write   // From Control path
     
 );
 
